@@ -5,8 +5,6 @@ Version:	1.16
 Release:	3
 License:	non-profit
 Group:		Daemons
-Group(de):	Server
-Group(pl):	Serwery
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Patch0:		%{name}-Makefile.patch
