@@ -2,7 +2,7 @@
 #
 # idled		daemon that terminates idle user sessions
 #
-# chkconfig:    345 95 05
+# chkconfig:	345 95 05
 #
 # description:	idled keeps an eye on every users session, and terminates
 # 		them when user has been idle or logged in for too long
@@ -23,27 +23,27 @@ case "$1" in
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/idled
 	else
 		# show "%s service is already running." idled
-		msg_Already_Running idled
+		msg_already_running idled
 		exit 1
 	fi
-        ;;
+	;;
   stop)
-        # Stop daemons.
-        # show "Stopping %s service" idled
+	# Stop daemons.
+	# show "Stopping %s service" idled
 	if [ -f /var/lock/subsys/idled ]; then
 		msg_stopping idled
 		killproc idled
 		rm -f /var/lock/subsys/idled >/dev/null 2>&1
 	else
 		# show "%s service is not running." idled
-		msg_Not_Running idled
+		msg_not_running idled
 		exit 1
 	fi	
-        ;;
-  restart)
-        $0 stop
+	;;
+  restart|reload)
+	$0 stop
 	$0 start
-        ;;
+	;;
   force-reload)
 	$0 stop && $0 start
 	exit $?
@@ -51,10 +51,10 @@ case "$1" in
   status)
 	status idled
 	exit $?
-        ;;
+	;;
   *)
-        # show "Usage: %s {start|stop|status|restart|reload|force-reload}" $0
-	msg_Usage "$0 {start|stop|status|restart|force-reload}"
+        # show "Usage: %s {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
         exit 1
 esac
 
