@@ -6,6 +6,7 @@ Release:	4
 License:	non-profit
 Group:		Daemons
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
+# Source0-md5:	a633e9484acb904e1bf0ed43b8383033
 Source1:	%{name}.init
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-man.patch
