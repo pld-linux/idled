@@ -11,6 +11,7 @@
 # Source function library
 . /etc/rc.d/init.d/functions
 
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -24,7 +25,6 @@ case "$1" in
 	else
 		# show "%s service is already running." idled
 		msg_already_running idled
-		exit 1
 	fi
 	;;
   stop)
@@ -37,15 +37,11 @@ case "$1" in
 	else
 		# show "%s service is not running." idled
 		msg_not_running idled
-		exit 1
 	fi	
 	;;
-  restart|reload)
+  restart|force-reload)
 	$0 stop
 	$0 start
-	;;
-  force-reload)
-	$0 stop && $0 start
 	exit $?
 	;;
   status)
@@ -54,8 +50,8 @@ case "$1" in
 	;;
   *)
         # show "Usage: %s {start|stop|restart|reload|force-reload|status}"
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
-        exit 1
+	msg_usage "$0 {start|stop|restart|force-reload|status}"
+        exit 3
 esac
 
 exit $RETVAL
