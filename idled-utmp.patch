@@ -1,0 +1,193 @@
+diff -ur idled-1.16/idled.c idled-1.16.utmp/idled.c
+--- idled-1.16/idled.c	Thu May 16 23:59:33 1996
++++ idled-1.16.utmp/idled.c	Tue Nov 21 15:59:43 2000
+@@ -131,7 +131,6 @@
+    int     fl_session = 1;
+    int     new;
+    int     res;
+-   int     utmpfd;
+    int     isConsole;
+    char    pathbuf[20];
+    char    tmpname[NAMELEN + 1];
+@@ -139,9 +138,9 @@
+    int     nextcheck;   /* Number of seconds to next check status */
+    FILE   *logfd;
+ #ifdef HAVE_UTMPX
+-   struct utmpx utmpbuf;
++   struct utmpx *utmpbuf;
+ #else
+-   struct utmp utmpbuf;
++   struct utmp *utmpbuf;
+ #endif
+    struct stat statbuf;
+    struct passwd *pswd;
+@@ -273,11 +272,11 @@
+ 
+       (void) time (&tempus);
+ 
+-      if ((utmpfd = open (UTMP_FILE, O_RDONLY, 0)) == SYSERROR)
+-      {
+-	 logfile ("%19.19s:  Cannot open %s.",ctime(&tempus),UTMP_FILE);
+-	 exit (1);
+-      }
++#ifdef HAVE_UTMPX
++      setutxent();
++#else
++      setutent();
++#endif
+ 
+       /* Set our nextcheck time to the max (sleeptime), though it may
+        * be lowered in the coming for loop so that an idle tty gets
+@@ -307,9 +306,9 @@
+        */
+ 
+ #ifdef HAVE_UTMPX
+-      for (utmptr = 0, userptr = 0; (res = read (utmpfd, (char *) &utmpbuf, sizeof (struct utmpx))) > 0;)
++      for (utmptr = 0, userptr = 0; (utmpbuf = getutxent()) != NULL;)
+ #else
+-      for (utmptr = 0, userptr = 0; (res = read (utmpfd, (char *) &utmpbuf, sizeof (struct utmp))) > 0;)
++      for (utmptr = 0, userptr = 0; (utmpbuf = getutent()) != NULL;)
+ #endif
+       {
+          if (utmptr >= MAXUSERS)
+@@ -318,24 +317,14 @@
+             break;
+          }
+ 
+-#ifdef HAVE_UTMPX
+-	 if (res != sizeof (struct utmpx))
+-#else
+-	 if (res != sizeof (struct utmp))
+-#endif
+-	 {
+-	    logfile ("Error reading utmp file, continuing.");
+-            break;
+-	 }
+-
+ 	 (void) time (&tempus);
+ 
+ #ifdef XDM_HACK
+          isConsole = FALSE;
+-         if (strcmp(utmpbuf.ut_line,XDM_DEV) == 0)
++         if (strcmp(utmpbuf->ut_line,XDM_DEV) == 0)
+          {
+             /* This is the console.  Is there a real name attached? */
+-            if (strlen(utmpbuf.ut_name) > 0)
++            if (strlen(utmpbuf->ut_name) > 0)
+                isConsole = TRUE;                /* Yes, use it */
+             else
+                strcpy(console_user,"");         /* No, clear the console user */
+@@ -343,16 +332,16 @@
+ #endif
+ 
+ #ifdef SYSV
+-         if (utmpbuf.ut_type == USER_PROCESS || isConsole)
++         if (utmpbuf->ut_type == USER_PROCESS || isConsole)
+ #else /* SYSV */
+-	 if (utmpbuf.ut_name[0] != NULL || isConsole)
++	 if (utmpbuf->ut_name[0] != NULL || isConsole)
+ #endif /* SYSV */
+ 	 {
+ 	    user = &users[utmptr];
+-	    (void) strncpy (tmpname, utmpbuf.ut_name, NAMELEN);
++	    (void) strncpy (tmpname, utmpbuf->ut_name, NAMELEN);
+ 	    tmpname[NAMELEN] = 0;
+ 
+-	    if (!strcmp (user->uid, tmpname) && user->time_on == utmpbuf.ut_xtime)
++	    if (!strcmp (user->uid, tmpname) && user->time_on == utmpbuf->ut_xtime)
+ 	    {
+ 	       if (new)
+ 		  setlimits (utmptr);
+@@ -377,18 +366,18 @@
+                   continue;
+ 
+ #ifdef UTMPPID
+-               user->pid = utmpbuf.ut_pid;
++               user->pid = utmpbuf->ut_pid;
+ #endif /* UTMPPID */
+ #ifdef UTMPHOST
+-               debug(4,("utmp host is %s",utmpbuf.ut_host));
+-               if ((int)strlen(utmpbuf.ut_host) <= 0)
++               debug(4,("utmp host is %s",utmpbuf->ut_host));
++               if ((int)strlen(utmpbuf->ut_host) <= 0)
+                   (void) strncpy (user->host,"localhost",HOSTLEN);
+                else
+-                  (void) strncpy (user->host,utmpbuf.ut_host,HOSTLEN);
++                  (void) strncpy (user->host,utmpbuf->ut_host,HOSTLEN);
+                user->host[HOSTLEN] = '\0';      /* Make sure that it is null-terminated */
+ #endif /* UTMPHOST */
+ 	       (void) strcpy (pathbuf, DEV);
+-	       (void) strcat (pathbuf, utmpbuf.ut_line);
++	       (void) strcat (pathbuf, utmpbuf->ut_line);
+ 	       (void) strcpy (user->line, pathbuf);
+ #ifdef XDM_HACK
+                if (isConsole)
+@@ -402,7 +391,7 @@
+                   logfile ("Error:  could not get info on supposed user %s.",user->uid);
+                else
+                   getgroups_func (pswd->pw_name, user->groups, pswd->pw_gid);
+-	       user->time_on = utmpbuf.ut_xtime;
++	       user->time_on = utmpbuf->ut_xtime;
+ 	       setlimits (utmptr);
+ 	       user->next = tempus;
+                chk_session_refuse(user);
+@@ -453,7 +442,7 @@
+             /* If this line is the console, then make our console_user
+              * string empty, since no one is on it!
+              */
+-            if (strcmp(CONSOLE_NAME,utmpbuf.ut_line) == 0)
++            if (strcmp(CONSOLE_NAME,utmpbuf->ut_line) == 0)
+             {
+                strcpy(console_user,"");
+             }
+@@ -463,7 +452,12 @@
+       }
+       debug(5,("Checked The entire UTMP file!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
+ 
+-      (void) close (utmpfd);
++#ifdef HAVE_UTMPX
++      endutxent();
++#else
++      endutent();
++#endif
++
+ 
+ #ifdef XDM_HACK
+       /* If the console user has been marked for killing, then do it. */
+diff -ur idled-1.16/utmplines.c idled-1.16.utmp/utmplines.c
+--- idled-1.16/utmplines.c	Thu Mar 21 21:22:41 1996
++++ idled-1.16.utmp/utmplines.c	Tue Nov 21 15:55:49 2000
+@@ -26,29 +26,15 @@
+ 
+ int main()
+ {
+-#ifdef HAVE_UTMPX
+-   int fd, numlines;
+-   struct utmpx uent;
++   int numlines;
+ 
+-   fd = open(UTMP_FILE,O_RDONLY,0);
++   setutent();
+ 
+    numlines = 0;
+-   while (read(fd,&uent,sizeof(struct utmpx)) > 0)
++   while (getutent())
+       numlines++;
+    
+-#else
+-   int fd, numlines;
+-   struct utmp uent;
+-
+-   fd = open(UTMP_FILE,O_RDONLY,0);
+-
+-   numlines = 0;
+-   while (read(fd,&uent,sizeof(struct utmp)) > 0)
+-      numlines++;
+-   
+-#endif
+-
+-   close(fd);
++   endutent();
+ 
+    printf("Number of lines in utmp file: %d\n",numlines);
+ 
