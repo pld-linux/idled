@@ -1,0 +1,11 @@
+--- idled-1.16/Makefile.orig	Wed Mar 27 09:53:48 2002
++++ idled-1.16/Makefile	Wed Mar 27 09:54:34 2002
+@@ -560,7 +560,7 @@
+ y.tab.h: parse.c
+ 
+ parse.c: parse.y
+-	yacc -d parse.y
++	$(YACC) -d parse.y
+ 	mv y.tab.c parse.c
+ 
+ scan.c: scan.l

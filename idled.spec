@@ -11,11 +11,12 @@ Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-man.patch
 Patch2:		%{name}-config.patch
 Patch3:		%{name}-utmp.patch
-Requires:	mailx
-BuildRequires:	byacc
+Patch4:		%{name}-yacc.patch
+BuildRequires:	bison
 Prereq:		fileutils
 Prereq:		/sbin/chkconfig
 Prereq:		rc-scripts
+Requires:	mailx
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -34,6 +35,7 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__make} clean
@@ -43,7 +45,8 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 	DEST="%{_sbindir}" \
 	CFDEST="%{_sysconfdir}/idled" \
 	MDEST="%{_mandir}" \
-	LOGDEST="/var/log"
+	LOGDEST="/var/log" \
+	YACC="bison -y"
 
 %install
 rm -rf $RPM_BUILD_ROOT
