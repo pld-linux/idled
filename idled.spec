@@ -5,9 +5,10 @@ Version:	1.16
 Release:	3
 Copyright:	non-profit
 Group:		Daemons
+Group(de):	Server
 Group(pl):	Serwery
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
-Source1:	idled.init
+Source1:	%{name}.init
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-man.patch
 Patch2:		%{name}-config.patch
@@ -38,8 +39,8 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 %build
 %{__make} clean
 %{__make} \
-	OPTFLAGS="$RPM_OPT_FLAGS -DMAILMESSAGEFILE=\"%{_sysconfdir}/idled/logout.msg\""\
-	LDFLAGS="-s" \
+	OPTFLAGS="%{rpmcflags} -DMAILMESSAGEFILE=\"%{_sysconfdir}/idled/logout.msg\""\
+	LDFLAGS="%{rpmldflags}" \
 	DEST="%{_sbindir}" \
 	CFDEST="%{_sysconfdir}/idled" \
 	MDEST="%{_mandir}" \
@@ -51,15 +52,17 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/idled,%{_mandir}/man{5,8},
 install idled $RPM_BUILD_ROOT%{_sbindir}
 install idled.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install idled.8 $RPM_BUILD_ROOT%{_mandir}/man8
-mv idled.cf.template idled.conf.template
+mv -f idled.cf.template idled.conf.template
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/idled
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/* \
-	idled.conf.template README TODO CHANGES COPYRIGHT
+gzip -9nf idled.conf.template README TODO CHANGES COPYRIGHT
 
 touch $RPM_BUILD_ROOT/var/log/idled.log
 touch $RPM_BUILD_ROOT%{_sysconfdir}/idled/logout.msg
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 touch /var/log/idled.log
