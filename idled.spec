@@ -15,7 +15,7 @@ Patch3:		%{name}-utmp.patch
 Prereq:		fileutils
 Prereq:		chkconfig
 Requires:	mailx
-Requires:	rc-scripts
+Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
