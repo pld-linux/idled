@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl):	Demon który koñczy nieaktywne sesje u¿ytkowników
 Name:		idled
 Version:	1.16
-Release:	3
+Release:	4
 License:	non-profit
 Group:		Daemons
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
@@ -59,8 +59,6 @@ mv -f idled.cf.template idled.conf.template
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/idled
 
-gzip -9nf idled.conf.template README TODO CHANGES COPYRIGHT
-
 touch $RPM_BUILD_ROOT/var/log/idled.log
 touch $RPM_BUILD_ROOT%{_sysconfdir}/idled/logout.msg
 
@@ -87,7 +85,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz
+%doc idled.conf.template README TODO CHANGES COPYRIGHT
 %dir %{_sysconfdir}/idled
 %{_sysconfdir}/idled/logout.msg
 %attr(755,root,root) %{_sbindir}/idled
