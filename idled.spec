@@ -36,7 +36,7 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 %build
 make clean
 make \
-	OPTFLAGS="$RPM_OPT_FLAGS -DMAILMESSAGEFILE=\"%{_sysconfdir}/logout.msg\""\
+	OPTFLAGS="$RPM_OPT_FLAGS -DMAILMESSAGEFILE=\"%{_sysconfdir}/idled/logout.msg\""\
 	LDFLAGS="-s" \
 	DEST="%{_sbindir}" \
 	CFDEST="%{_sysconfdir}/idled" \
