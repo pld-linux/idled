@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl):	Demon który koñczy nieaktywne sesje u¿ytkowników
 Name:		idled
 Version:	1.16
-Release:	2
+Release:	3
 Copyright:	non-profit
 Group:		Daemons
 Group(pl):	Serwery
@@ -11,6 +11,7 @@ Source1:	idled.init
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-man.patch
 Patch2:		%{name}-config.patch
+Patch3:		%{name}-utmp.patch
 Prereq:		fileutils
 Prereq:		chkconfig
 Requires:	mailx
@@ -32,6 +33,7 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__make} clean
