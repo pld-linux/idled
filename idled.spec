@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl):	Demon który koñczy nieaktywne sesje u¿ytkowników
 Name:		idled
 Version:	1.16
-Release:	1
+Release:	2
 Copyright:	non-profit
 Group:		Daemons
 Group(pl):	Serwery
@@ -71,8 +71,10 @@ fi
 
 %preun
 if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/idled ]; then
+		/etc/rc.d/init.d/idled stop >&2
+	fi
 	/sbin/chkconfig --del idled
-	/etc/rc.d/init.d/idled stop >&2
 fi
 
 %files
