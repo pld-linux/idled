@@ -67,20 +67,10 @@ rm -rf $RPM_BUILD_ROOT
 %post
 touch /var/log/idled.log
 chmod 640 /var/log/cron
-/sbin/chkconfig --add idled
-if [ -f /var/lock/subsys/idled ]; then
-	/etc/rc.d/init.d/idled restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/idled start\" to start idled."
-fi
+%chkconfig_add
 
 %preun
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/idled ]; then
-		/etc/rc.d/init.d/idled stop >&2
-	fi
-	/sbin/chkconfig --del idled
-fi
+%chkconfig_del
 
 %files
 %defattr(644,root,root,755)
