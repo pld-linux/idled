@@ -12,6 +12,7 @@ Patch1:		%{name}-man.patch
 Patch2:		%{name}-config.patch
 Patch3:		%{name}-utmp.patch
 Requires:	mailx
+BuildRequires:	byacc
 Prereq:		fileutils
 Prereq:		/sbin/chkconfig
 Prereq:		rc-scripts
