@@ -34,8 +34,8 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 %patch2 -p1
 
 %build
-make clean
-make \
+%{__make} clean
+%{__make} \
 	OPTFLAGS="$RPM_OPT_FLAGS -DMAILMESSAGEFILE=\"%{_sysconfdir}/idled/logout.msg\""\
 	LDFLAGS="-s" \
 	DEST="%{_sbindir}" \
