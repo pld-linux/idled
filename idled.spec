@@ -3,7 +3,7 @@ Summary(pl):	Demon który koñczy nieaktywne sesje u¿ytkowników
 Name:		idled
 Version:	1.16
 Release:	3
-Copyright:	non-profit
+License:	non-profit
 Group:		Daemons
 Group(de):	Server
 Group(pl):	Serwery
@@ -14,7 +14,7 @@ Patch1:		%{name}-man.patch
 Patch2:		%{name}-config.patch
 Patch3:		%{name}-utmp.patch
 Prereq:		fileutils
-Prereq:		chkconfig
+Prereq:		/sbin/chkconfig
 Requires:	mailx
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
