@@ -1,0 +1,57 @@
+diff -Naur idled-1.16-p/idled.cf.man.form idled-1.16/idled.cf.man.form
+--- idled-1.16-p/idled.cf.man.form	Wed Dec 27 23:33:33 1995
++++ idled-1.16/idled.cf.man.form	Fri May 26 15:14:41 2000
+@@ -1,4 +1,4 @@
+-.TH IDLED.CF 5 "October 22, 1995"
++.TH IDLED.CONF 5 "October 22, 1995"
+ .SH NAME
+ CONFIGPATH \- idled configuration file format
+ 
+@@ -6,7 +6,7 @@
+ .SH DESCRIPTION
+ .IR Idled,
+ the login monitor daemon, decides how it should act based on the file
+-idled.cf.
++idled.conf.
+ This file consists of a series of specifications which each
+ describe an aspect of idled's actions.  There are ten types of commands: 
+ .IP 1.
+@@ -154,7 +154,7 @@
+ some other
+ .B session
+ command in the
+-.I idled.cf
++.I idled.conf
+ file applying to
+ .BR group ,
+ .BR login ,
+@@ -473,7 +473,7 @@
+ .PP
+ A sample idled configuration file follows (look in the idled
+ distribution package for
+-.BR idled.cf ,
++.BR idled.conf ,
+ an example that shows all commands):
+ .br
+ .nf
+diff -Naur idled-1.16-p/idled.man.form idled-1.16/idled.man.form
+--- idled-1.16-p/idled.man.form	Thu Oct 26 02:56:54 1995
++++ idled-1.16/idled.man.form	Fri May 26 15:14:55 2000
+@@ -24,7 +24,7 @@
+ .PP
+ .I Idled
+ uses a configuration file,
+-.IR idled.cf ,
++.IR idled.conf ,
+ to find out how long a terminal must be unused to be considered
+ \*(lqidle\*(rq, and which users, groups, terminals, or clusters of
+ terminals are exempt from being logged out.
+@@ -63,7 +63,7 @@
+ dissacociates itself from the invoking terminal, most of the errors
+ get put in the log file.
+ .SH SEE ALSO
+-idled.cf(5), utmp(5)
++idled.conf(5), utmp(5)
+ .SH BUGS
+ If a user logs off and then on again fast enough and manages to get a
+ different tty, he may be warned about a multiple login.

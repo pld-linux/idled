@@ -1,0 +1,81 @@
+diff -Naur idled-1.16/Makefile idled-1.16-p/Makefile
+--- idled-1.16/Makefile	Fri May 17 00:05:28 1996
++++ idled-1.16-p/Makefile	Fri May 26 14:44:01 2000
+@@ -215,25 +215,25 @@
+ # SVR4  --  Solaris 2.x
+ # Use install3 for /usr/sbin/install
+ # and install1 for /usr/ucb/install
+-DEFS += -DSYSV -DHAVE_PROC_FS -DUTMPPID -DHAVE_SETSID -DHAVE_UTMPX -DUTMPHOST -DRUDEKILL
+-SPECLIBS = 
+-INSTTYPE = install3
+-
+-DEST    = /usr/local/bin
+-CFDEST  = /usr/local/lib
+-MDEST   = /usr/local/man
+-LOGDEST = /var/log
+-
+-OWNER   = root
+-CFOWNER = root
+-MOWNER  = root
+-
+-GROUP   = root
+-CFGROUP = root
+-
+-MODE    = 750
+-CFMODE  = 664
+-MMODE   = 644
++#DEFS += -DSYSV -DHAVE_PROC_FS -DUTMPPID -DHAVE_SETSID -DHAVE_UTMPX -DUTMPHOST -DRUDEKILL
++#SPECLIBS = 
++#INSTTYPE = install3
++#
++#DEST    = /usr/local/bin
++#CFDEST  = /usr/local/lib
++#MDEST   = /usr/local/man
++#LOGDEST = /var/log
++#
++#OWNER   = root
++#CFOWNER = root
++#MOWNER  = root
++#
++#GROUP   = root
++#CFGROUP = root
++#
++#MODE    = 750
++#CFMODE  = 664
++#MMODE   = 644
+ 
+ ######################################################################
+ ######################################################################
+@@ -242,9 +242,9 @@
+ #        -DHAVE_YYRESTART if you have problems.
+ # You should do a 'make clean' before 'make', so that parse.c
+ # and scan.c will be created on your system.
+-#DEFS += -DSYSV -DUTMPPID -DUTMPHOST -DHAVE_SETSID -DHAVE_YYRESTART
+-#SPECLIBS = 
+-#INSTTYPE = install1
++DEFS += ${OPTFLAGS} -DSYSV -DUTMPPID -DUTMPHOST -DHAVE_SETSID -DHAVE_YYRESTART
++SPECLIBS = 
++INSTTYPE = install1
+ #
+ #DEST    = /usr/local/bin
+ #CFDEST  = /usr/local/lib
+@@ -417,8 +417,8 @@
+ 
+ # programs (not including paths) that need explicit make lines, plain files
+ BINARY  = idled
+-COMMFILE= idled.cf
+-CFMAN   = idled.cf.5
++COMMFILE= idled.conf
++CFMAN   = idled.conf.5
+ PMAN    = idled.8
+ 
+ # Names of config and log files
+@@ -555,7 +555,7 @@
+ 
+ # rules for everybody in ${BINARY} go here
+ idled: ${OBJ}
+-	${CC} ${CFLAGS} -o idled ${OBJ} ${LIBS}
++	${CC} ${LDFLAGS} -o idled ${OBJ} ${LIBS}
+ 
+ y.tab.h: parse.c
+ 

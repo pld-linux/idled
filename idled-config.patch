@@ -1,0 +1,14 @@
+diff -Naur idled-1.16-p/idled.h idled-1.16/idled.h
+--- idled-1.16-p/idled.h	Thu May 16 23:47:06 1996
++++ idled-1.16/idled.h	Fri May 26 15:18:43 2000
+@@ -50,8 +50,9 @@
+ 
+ /*********************** MAIL MESSAGE PATHS *************************/
+ #define MAILPATH        "/bin/mail"
++#ifndef MAILMESSAGEFILE
+ #define MAILMESSAGEFILE "/usr/local/lib/logout.msg"
+-
++#endif
+ 
+ #define DEV		"/dev/"
+ 
