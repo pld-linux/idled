@@ -11,9 +11,9 @@ Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-man.patch
 Patch2:		%{name}-config.patch
 Patch3:		%{name}-utmp.patch
+Requires:	mailx
 Prereq:		fileutils
 Prereq:		/sbin/chkconfig
-Requires:	mailx
 Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -47,6 +47,7 @@ za d³ugo zalogowany, idled ostrze¿e go i odpowiednio zakoñczy sesjê.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/idled,%{_mandir}/man{5,8},/var/log,/etc/rc.d/init.d}
+
 install idled $RPM_BUILD_ROOT%{_sbindir}
 install idled.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install idled.8 $RPM_BUILD_ROOT%{_mandir}/man8
@@ -83,6 +84,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc *.gz
+%dir %{_sysconfdir}/idled
 %{_sysconfdir}/idled/logout.msg
 %attr(755,root,root) %{_sbindir}/idled
 %attr(754,root,root) /etc/rc.d/init.d/idled
