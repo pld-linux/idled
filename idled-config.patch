@@ -12,3 +12,12 @@ diff -Naur idled-1.16-p/idled.h idled-1.16/idled.h
  
  #define DEV		"/dev/"
  
+@@ -103,7 +103,7 @@
+  * to print out the current number of lines in your utmp file.
+  * MAXUSERS should be greater than this number.
+  */
+-#define MAXUSERS	100
++#define MAXUSERS	10000
+ 
+ #ifdef UT_NAMESIZE
+ #  define NAMELEN UT_NAMESIZE   /* max username len = define in utmp.h */
