@@ -4,7 +4,7 @@
 #
 # chkconfig:	345 95 05
 #
-# description:	idled keeps an eye on every users session, and terminates
+# description:	idled keeps an eye on every users session, and terminates \
 # 		them when user has been idle or logged in for too long
 #
 
