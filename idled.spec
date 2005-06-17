@@ -14,6 +14,7 @@ Patch2:		%{name}-config.patch
 Patch3:		%{name}-utmp.patch
 Patch4:		%{name}-yacc.patch
 BuildRequires:	bison
+BuildRequires:	flex
 PreReq:		rc-scripts
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
