@@ -33,7 +33,7 @@ case "$1" in
 		rm -f /var/lock/subsys/idled >/dev/null 2>&1
 	else
 		msg_not_running idled
-	fi	
+	fi
 	;;
   restart|force-reload)
 	$0 stop
