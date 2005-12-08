@@ -17,25 +17,21 @@ case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/idled ]; then
-		# show "Starting %s service." idled
 		msg_starting idled
 		daemon idled
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/idled
 	else
-		# show "%s service is already running." idled
 		msg_already_running idled
 	fi
 	;;
   stop)
 	# Stop daemons.
-	# show "Stopping %s service" idled
 	if [ -f /var/lock/subsys/idled ]; then
 		msg_stopping idled
 		killproc idled
 		rm -f /var/lock/subsys/idled >/dev/null 2>&1
 	else
-		# show "%s service is not running." idled
 		msg_not_running idled
 	fi	
 	;;
@@ -49,7 +45,6 @@ case "$1" in
 	exit $?
 	;;
   *)
-        # show "Usage: %s {start|stop|restart|reload|force-reload|status}"
 	msg_usage "$0 {start|stop|restart|force-reload|status}"
         exit 3
 esac
