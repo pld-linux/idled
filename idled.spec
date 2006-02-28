@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl):	Demon który koñczy nieaktywne sesje u¿ytkowników
 Name:		idled
 Version:	1.16
-Release:	7
+Release:	8
 License:	non-profit
 Group:		Daemons
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
@@ -15,10 +15,11 @@ Patch3:		%{name}-utmp.patch
 Patch4:		%{name}-yacc.patch
 BuildRequires:	bison
 BuildRequires:	flex
-PreReq:		rc-scripts
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post):	fileutils
 Requires(post,preun):	/sbin/chkconfig
 Requires:	/bin/mail
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -68,20 +69,16 @@ touch $RPM_BUILD_ROOT%{_sysconfdir}/idled/logout.msg
 rm -rf $RPM_BUILD_ROOT
 
 %post
-touch /var/log/idled.log
-chmod 640 /var/log/cron
-/sbin/chkconfig --add idled
-if [ -f /var/lock/subsys/idled ]; then
-	/etc/rc.d/init.d/idled restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/idled start\" to start idled."
+if [ ! -f /var/log/idled.log ]; then
+	touch /var/log/idled.log
+	chmod 640 /var/log/idled.log
 fi
+/sbin/chkconfig --add idled
+%service idled restart
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/idled ]; then
-		/etc/rc.d/init.d/idled stop >&2
-	fi
+	%service idled stop
 	/sbin/chkconfig --del idled
 fi
 
