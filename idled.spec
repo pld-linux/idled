@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl):	Demon który koñczy nieaktywne sesje u¿ytkowników
 Name:		idled
 Version:	1.16
-Release:	8
+Release:	9
 License:	non-profit
 Group:		Daemons
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
