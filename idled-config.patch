@@ -17,7 +17,7 @@ diff -Naur idled-1.16-p/idled.h idled-1.16/idled.h
   * MAXUSERS should be greater than this number.
   */
 -#define MAXUSERS	100
-+#define MAXUSERS	1000
++#define MAXUSERS	10000
  
  #ifdef UT_NAMESIZE
  #  define NAMELEN UT_NAMESIZE   /* max username len = define in utmp.h */
