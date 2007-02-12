@@ -1,5 +1,5 @@
 Summary:	Daemon that terminates users idle sessions
-Summary(pl):	Demon ktÛry koÒczy nieaktywne sesje uøytkownikÛw
+Summary(pl.UTF-8):   Demon kt√≥ry ko≈Ñczy nieaktywne sesje u≈ºytkownik√≥w
 Name:		idled
 Version:	1.16
 Release:	8
@@ -27,10 +27,10 @@ Idled is a daemon that runs on a machine to keep an eye on current
 users. If users have been idle for too long, or have been logged on
 for too long, it will warn them and log them out appropriately.
 
-%description -l pl
-Idled jest demonem ktÛry pilnuje aktualnie zalogowanych uøytkownikÛw.
-Je∂li uøytkownik by≥ nieaktywny przez odpowiednio d≥ugi czas, lub by≥
-za d≥ugo zalogowany, idled ostrzeøe go i odpowiednio zakoÒczy sesjÍ.
+%description -l pl.UTF-8
+Idled jest demonem kt√≥ry pilnuje aktualnie zalogowanych u≈ºytkownik√≥w.
+Je≈õli u≈ºytkownik by≈Ç nieaktywny przez odpowiednio d≈Çugi czas, lub by≈Ç
+za d≈Çugo zalogowany, idled ostrze≈ºe go i odpowiednio zako≈Ñczy sesjƒô.
 
 %prep
 %setup -q
