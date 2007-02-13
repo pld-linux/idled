@@ -1,5 +1,5 @@
 Summary:	Daemon that terminates users idle sessions
-Summary(pl.UTF-8):   Demon który kończy nieaktywne sesje użytkowników
+Summary(pl.UTF-8):	Demon który kończy nieaktywne sesje użytkowników
 Name:		idled
 Version:	1.16
 Release:	8
