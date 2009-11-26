@@ -1,0 +1,31 @@
+--- idled-1.16/zap.c~	1996-05-05 04:37:06.000000000 +0200
++++ idled-1.16/zap.c	2009-11-26 23:56:30.852304399 +0100
+@@ -94,7 +94,7 @@
+ 
+    if (do_msg)
+    {
+-      td = open (him->line, O_RDWR, 0600);
++      td = open (him->line, O_RDWR|O_NONBLOCK, 0600);
+       (void) tcflow(td, TCOON);
+    }
+ 
+--- idled-1.16/warn.c~	1996-05-16 23:59:57.000000000 +0200
++++ idled-1.16/warn.c	2009-11-26 23:56:15.652305661 +0100
+@@ -73,6 +73,7 @@
+    register struct user *him;
+    int     opened = 0, status;
+    FILE   *termf;
++   int     termfd;
+    time_t  tempus;
+ 
+ #if (DEBUG > 1) || defined(DISABLE_WARNS)
+@@ -177,7 +178,8 @@
+       else
+          fclose(termf);         /* Just fine.  Go ahead and do messages */
+ 
+-      if ((termf = fopen (him->line, "w")) == (FILE *) NULL)
++      termfd = open (him->line, O_WRONLY|O_NONBLOCK);
++      if ((termfd == -1) || ((termf = fdopen (termfd, "w")) == (FILE *) NULL))
+       {
+          /* An error!  Check to see if we have already logged it. */
+          if (inlinetime(him,&errorlines))
