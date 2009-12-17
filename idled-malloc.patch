@@ -1,0 +1,42 @@
+diff -u idled-1.16/idled.c idled-1.16-malloc/idled.c
+--- idled-1.16/idled.c	2009-12-18 00:35:26.999921232 +0100
++++ idled-1.16-malloc/idled.c	2009-12-18 00:34:49.166672755 +0100
+@@ -54,8 +54,8 @@
+    struct usertime *next;	/* Pointer to the next entry */
+ };
+ 
+-struct	user	users[MAXUSERS];
+-struct	user	*pusers[MAXUSERS];
++struct	user	*users;
++struct	user	**pusers;
+ struct	usertime *sess_users = NULL;
+ struct	linetime *errorlines = NULL;
+ 
+@@ -241,6 +241,13 @@
+    rules = (struct qelem *) malloc (sizeof (struct qelem));
+    session = (struct qelem *) malloc (sizeof (struct qelem));
+ 
++   users = (struct user *)malloc(MAXUSERS * sizeof(struct user));
++   pusers = (struct user **)malloc(MAXUSERS * sizeof(struct user *));
++   if (users == NULL || pusers == NULL) {
++      (void) fprintf (stderr, "idled: Cannot allocate memory for user tables\n");
++      exit (1);
++   }
++
+    exmpt->q_forw = exmpt->q_back = exmpt;
+    refuse->q_forw = refuse->q_back = refuse;
+    rules->q_forw = rules->q_back = rules;
+diff -u idled-1.16/idled.h idled-1.16-malloc/idled.h
+--- idled-1.16/idled.h	2009-12-18 00:35:26.996921911 +0100
++++ idled-1.16-malloc/idled.h	2009-12-18 00:34:16.581920419 +0100
+@@ -156,8 +156,8 @@
+ ** just skip him.
+ */
+ 
+-extern	struct	user	users[];
+-extern	struct	user	*pusers[];
++extern	struct	user	*users;
++extern	struct	user	**pusers;
+ 
+ /* records that the nodes of the linked list will have pointers too */
+ 
