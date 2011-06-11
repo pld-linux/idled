@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl.UTF-8):	Demon który kończy nieaktywne sesje użytkowników
 Name:		idled
 Version:	1.16
-Release:	11
+Release:	12
 License:	non-profit
 Group:		Daemons
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
@@ -47,6 +47,7 @@ za długo zalogowany, idled ostrzeże go i odpowiednio zakończy sesję.
 %build
 %{__make} clean
 %{__make} \
+	CC="%{__cc}" \
 	OPTFLAGS="%{rpmcflags} -DMAILMESSAGEFILE=\"%{_sysconfdir}/idled/logout.msg\""\
 	LDFLAGS="%{rpmldflags}" \
 	DEST="%{_sbindir}" \
@@ -62,7 +63,7 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/idled,%{_mandir}/man{5,8},
 install idled $RPM_BUILD_ROOT%{_sbindir}
 install idled.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install idled.8 $RPM_BUILD_ROOT%{_mandir}/man8
-mv -f idled.cf.template idled.conf.template
+install idled.cf.template $RPM_BUILD_ROOT%{_sysconfdir}/idled/idled.conf.template
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/idled
 
@@ -88,10 +89,11 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc idled.conf.template README TODO CHANGES COPYRIGHT
+%doc README TODO CHANGES COPYRIGHT
 %dir %{_sysconfdir}/idled
+%{_sysconfdir}/idled/idled.conf.template
 %{_sysconfdir}/idled/logout.msg
 %attr(755,root,root) %{_sbindir}/idled
 %attr(754,root,root) /etc/rc.d/init.d/idled
-%{_mandir}/man*/*
+%{_mandir}/man[58]/idled*
 %attr(640,root,root) %ghost /var/log/idled.log
