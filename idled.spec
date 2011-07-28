@@ -2,7 +2,7 @@ Summary:	Daemon that terminates users idle sessions
 Summary(pl.UTF-8):	Demon który kończy nieaktywne sesje użytkowników
 Name:		idled
 Version:	1.16
-Release:	12
+Release:	13
 License:	non-profit
 Group:		Daemons
 Source0:	http://www.darkwing.com/idled/download/%{name}-%{version}.tar.gz
@@ -15,6 +15,7 @@ Patch3:		%{name}-utmp.patch
 Patch4:		%{name}-yacc.patch
 Patch5:		%{name}-O_NONBLOCK.patch
 Patch6:		%{name}-malloc.patch
+Patch7:		%{name}-freopen.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -43,6 +44,7 @@ za długo zalogowany, idled ostrzeże go i odpowiednio zakończy sesję.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 %{__make} clean

@@ -1,0 +1,11 @@
+--- idled-1.16/idled.c~	2011-07-28 23:17:52.159461540 +0200
++++ idled-1.16/idled.c	2011-07-28 23:19:42.995695945 +0200
+@@ -1382,7 +1382,7 @@
+ #endif /* RLIMIT_NOFILE */
+ 
+    /* Close all fds. */
+-#ifdef BSD_OS2
++#if 1
+    for (fd = 1; fd < nfds; ++fd)        /* Don't close fd 0 on BSDI BSD/OS 2 */
+                                         /* This works around some weird bug */
+ #else
